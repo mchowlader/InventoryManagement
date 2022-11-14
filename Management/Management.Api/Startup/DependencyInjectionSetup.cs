@@ -18,10 +18,6 @@ namespace Management.Api.Startup
             services.AddEndpointsApiExplorer();
             services.AddSwaggerGen();
 
-            //services.AddDbContext<ApplicationDbContext>(options
-            //    => options.UseSqlServer(connectionInfo.connectionString, b =>
-            //        b.MigrationsAssembly(connectionInfo.migrationAssemblyName)));
-
             services.AddDbContext<ApplicationDbContext>(option 
                 => option.UseSqlServer(Configuration.GetConnectionString("DefaultConnection"), 
                 b => b.MigrationsAssembly(typeof(Program).Assembly.FullName)));
