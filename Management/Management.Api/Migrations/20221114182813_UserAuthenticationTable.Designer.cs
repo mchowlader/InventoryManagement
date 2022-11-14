@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Management.Api.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20221114142752_UserAuthentication")]
-    partial class UserAuthentication
+    [Migration("20221114182813_UserAuthenticationTable")]
+    partial class UserAuthenticationTable
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {

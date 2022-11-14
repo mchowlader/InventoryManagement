@@ -9,10 +9,9 @@ namespace Management.Api.Startup
     public static class DependencyInjectionSetup
     {
         public static IServiceCollection RegisterServices(this IServiceCollection services, 
-            WebApplicationBuilder web/*, (string connectionString, string migrationAssemblyName) GetConnectionStringAndAssemblyName*/)
+            WebApplicationBuilder web)
         {
             ConfigurationManager Configuration = web.Configuration;
-            //var connectionInfo = GetConnectionStringAndAssemblyName;
 
             services.AddControllers();
             services.AddEndpointsApiExplorer();

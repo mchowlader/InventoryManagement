@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace Management.Api.Migrations
 {
-    public partial class UserAuthentication : Migration
+    public partial class UserAuthenticationTable : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
