@@ -1,7 +1,9 @@
-﻿using Management.Common.Configuration;
+﻿using Management.Common;
+using Management.Common.Configuration;
 using Management.Model.CommonModel;
 using Management.Model.Data;
 using Management.Model.User;
+using Management.Services.User;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
@@ -11,15 +13,17 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Management.Services.User
+namespace Management.Services.Users
 {
     public class RegistrationServices : IRegistrationServices
     {
         private readonly ConnectionStringConfig _connectionStringConfig;
+        private readonly IUserServices _userServices;
         private readonly UserManager<ApplicationUser> _userManager;
         DbContextOptionsBuilder<ApplicationDbContext> optionsBuilder = new DbContextOptionsBuilder<ApplicationDbContext>();
-        public RegistrationServices(ConnectionStringConfig connectionStringConfig, UserManager<ApplicationUser> userManager)
+        public RegistrationServices(ConnectionStringConfig connectionStringConfig, UserManager<ApplicationUser> userManager, IUserServices userServices)
         {
+            _userManager= userManager;
             _userManager= userManager;
             _connectionStringConfig= connectionStringConfig;
         }
@@ -33,6 +37,27 @@ namespace Management.Services.User
                     {
                         return ServiceResponse<UserRegistrationDTO>.Error("Email is already taken.");
                     }
+
+                    var email_verificaiotn_link_code = Utilities.GeerateRandomCodeStringByBiteSize(25).Take(25);
+                    Generate_Email_Verifiction_Link_code:
+                    if (await context.Users.AnyAsync(x => x.EmailVerificationLinkCode == email_verificaiotn_link_code))
+                    {
+                        goto Generate_Email_Verifiction_Link_code;
+                    }
+
+                    RegisterViewModel registerViewModel = new RegisterViewModel()
+                    {
+                        Email = userRegistrationDTO.Email,
+                        IpAddress = userRegistrationDTO.IpAddress,
+                        Password = userRegistrationDTO.Password,
+                        UserName = userRegistrationDTO.UserName,
+                        FirstName = "",
+                        LastName = "",
+                        UserRole = "",
+                        VisibleEmailOption = false,
+                        EmailVerificationLinkCode = email_verificaiotn_link_code,
+                        EmailVerificationExpiry = Utilities.GetDate().AddDays(1)
+                    };
                 }
             }
             catch (Exception)

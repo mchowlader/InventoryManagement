@@ -17,5 +17,9 @@ namespace Management.Common
         {
             if (String.IsNullOrEmpty(value)) return true; return false;
         }
+        public static string Take(this string s, int i)
+        {
+            if(i >= s.Length) return s; return s.Substring(0,i);
+        }
     }
 }

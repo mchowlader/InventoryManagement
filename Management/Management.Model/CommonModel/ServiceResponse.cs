@@ -12,7 +12,6 @@ namespace Management.Model.CommonModel
         public TEntity? data { get; set; }
         public List<string>? Message { get; set; }
         public bool success { get; set; }
-
         public static ServiceResponse<TEntity> Error(string? message = null)
         {
             if(message.IsNullOrEmpty())
@@ -22,7 +21,6 @@ namespace Management.Model.CommonModel
                     message = "Something went wrong. Please try again";
                 }
             }
-
             return new ServiceResponse<TEntity>
             {
                 data = null,

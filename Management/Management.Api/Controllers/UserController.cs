@@ -1,7 +1,7 @@
 ﻿using Management.Common;
 using Management.Model.CommonModel;
 using Management.Model.User;
-using Management.Services.User;
+using Management.Services.Users;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
