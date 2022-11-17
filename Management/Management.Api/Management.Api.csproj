@@ -17,10 +17,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Management.Model\Management.Model.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Controllers\" />
+    <ProjectReference Include="..\Management.Services\Management.Services.csproj" />
   </ItemGroup>
 
 </Project>

@@ -20,6 +20,8 @@ namespace Management.Model.Data
         public string? Country { get; set; }
         [Required(ErrorMessage = "Mobile number is required")]
         public string? MobileNumber { get; set; }
+        public string? EmailVerificationLinkCode { get; set; }
+        public bool VisibleEmailOption { get; set; }
     }
     public class Role : IdentityRole<Guid>
     {
