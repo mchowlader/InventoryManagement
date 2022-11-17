@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Management.Api.Controllers
 {
+    [ApiExplorerSettings(IgnoreApi = false)]
     [Route("api/users")]
     [ApiController]
     public class UserController : ControllerBase
