@@ -19,12 +19,10 @@ namespace Management.Services.Users
     {
         private readonly ConnectionStringConfig _connectionStringConfig;
         private readonly IUserServices _userServices;
-        private readonly UserManager<ApplicationUser> _userManager;
         DbContextOptionsBuilder<ApplicationDbContext> optionsBuilder = new DbContextOptionsBuilder<ApplicationDbContext>();
-        public RegistrationServices(ConnectionStringConfig connectionStringConfig, UserManager<ApplicationUser> userManager, IUserServices userServices)
+        public RegistrationServices(ConnectionStringConfig connectionStringConfig, IUserServices userServices)
         {
-            _userManager= userManager;
-            _userManager= userManager;
+            _userServices = userServices;
             _connectionStringConfig= connectionStringConfig;
         }
         public async Task<ServiceResponse<UserRegistrationDTO>> SignUp(UserRegistrationDTO userRegistrationDTO)
@@ -37,6 +35,7 @@ namespace Management.Services.Users
                     {
                         return ServiceResponse<UserRegistrationDTO>.Error("Email is already taken.");
                     }
+                    var adminUserId = await context.Users.Where(x => x.UserName == "AutomationUser").Select(x => x.Id).FirstOrDefaultAsync();
 
                     var email_verificaiotn_link_code = Utilities.GeerateRandomCodeStringByBiteSize(25).Take(25);
                     Generate_Email_Verifiction_Link_code:
@@ -58,6 +57,8 @@ namespace Management.Services.Users
                         EmailVerificationLinkCode = email_verificaiotn_link_code,
                         EmailVerificationExpiry = Utilities.GetDate().AddDays(1)
                     };
+
+                    var userCreation = await _userServices.CreateUserAsync(registerViewModel, adminUserId.ToString());
                 }
             }
             catch (Exception)

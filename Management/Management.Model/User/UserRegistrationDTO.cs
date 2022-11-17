@@ -18,5 +18,7 @@ namespace Management.Model.User
         [StringLength(50, ErrorMessage = "Password should be of minimum 6 character and maximum 50 character.")]
         public string? Password { get; set; }
         public string? IpAddress { get; set; }
+        public string? InvitationConfirmationURL { get; set; }
+
     }
 }

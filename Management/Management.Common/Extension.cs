@@ -21,5 +21,17 @@ namespace Management.Common
         {
             if(i >= s.Length) return s; return s.Substring(0,i);
         }
+        public static long ToInt32(this object o)
+        {
+            try
+            {
+                return Convert.ToInt32(o);
+            }
+            catch (Exception)
+            {
+
+                return 0;
+            }
+        }
     }
 }

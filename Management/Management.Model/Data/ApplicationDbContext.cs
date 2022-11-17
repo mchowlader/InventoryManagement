@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+﻿using Management.Model.DBModel;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -11,9 +12,14 @@ namespace Management.Model.Data
     public class ApplicationDbContext : IdentityDbContext<ApplicationUser, Role, Guid,
         UserClaim, UserRole, UserLogin, Roleclaim, UserToken>
     {
-        public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options)
+        public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) 
+            : base(options)
         { 
         
         }
+
+        public DbSet<DBModel.Action> Actions { get; set; }
+        public DbSet<UserAuditLog> UserAuditLogs { get; set; }
+
     }
 }

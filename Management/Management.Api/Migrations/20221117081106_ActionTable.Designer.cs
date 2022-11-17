@@ -4,6 +4,7 @@ using Management.Model.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Management.Api.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20221117081106_ActionTable")]
+    partial class ActionTable
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -278,36 +280,6 @@ namespace Management.Api.Migrations
                     b.ToTable("Actions");
                 });
 
-            modelBuilder.Entity("Management.Model.DBModel.UserAuditLog", b =>
-                {
-                    b.Property<long>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("bigint");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("Id"), 1L, 1);
-
-                    b.Property<long>("ActionId")
-                        .HasColumnType("bigint");
-
-                    b.Property<DateTime>("ActionMoment")
-                        .HasColumnType("datetime2");
-
-                    b.Property<Guid>("AffectedUserId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<long>("ByUserId")
-                        .HasColumnType("bigint");
-
-                    b.Property<string>("IpAddress")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("ActionId");
-
-                    b.ToTable("UserAuditLog");
-                });
-
             modelBuilder.Entity("Management.Model.Data.Roleclaim", b =>
                 {
                     b.HasOne("Management.Model.Data.Role", null)
@@ -357,17 +329,6 @@ namespace Management.Api.Migrations
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-                });
-
-            modelBuilder.Entity("Management.Model.DBModel.UserAuditLog", b =>
-                {
-                    b.HasOne("Management.Model.DBModel.Action", "Stores")
-                        .WithMany()
-                        .HasForeignKey("ActionId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Stores");
                 });
 #pragma warning restore 612, 618
         }
