@@ -26,11 +26,13 @@ namespace Management.Api.Startup
             services.AddScoped<IRegistrationServices, RegistrationServices>();
             services.AddScoped<IUserServices, UserServices>();
             services.AddConfiguaration<ConnectionStringConfig>(Configuration, "ConnectionStrings");
+            services.AddIdentity<ApplicationUser, Role>()
+                    .AddEntityFrameworkStores<ApplicationDbContext>()
+                    .AddDefaultTokenProviders();
+
+            //services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
             #endregion
 
-            services.AddIdentity<IdentityUser, IdentityRole>().AddEntityFrameworkStores<ApplicationDbContext>();
-
-            services.AddHttpClient();
             services.AddControllers();
             services.AddEndpointsApiExplorer();
             services.AddSwaggerGen();

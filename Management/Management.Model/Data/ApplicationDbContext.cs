@@ -12,7 +12,8 @@ namespace Management.Model.Data
     public class ApplicationDbContext : IdentityDbContext<ApplicationUser, Role, Guid,
         UserClaim, UserRole, UserLogin, Roleclaim, UserToken>
     {
-        public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options)
+        public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) 
+            : base(options)
         { 
         
         }
