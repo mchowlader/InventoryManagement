@@ -22,8 +22,9 @@ namespace Management.Services.Users
         DbContextOptionsBuilder<ApplicationDbContext> optionsBuilder = new DbContextOptionsBuilder<ApplicationDbContext>();
         public RegistrationServices(ConnectionStringConfig connectionStringConfig, IUserServices userServices)
         {
+            _connectionStringConfig = connectionStringConfig;
+            optionsBuilder.UseSqlServer(_connectionStringConfig.DefaultConnection);
             _userServices = userServices;
-            _connectionStringConfig= connectionStringConfig;
         }
         public async Task<ServiceResponse<UserRegistrationDTO>> SignUp(UserRegistrationDTO userRegistrationDTO)
         {
