@@ -18,8 +18,6 @@ namespace Management.Model.Data
         public bool IsRemoved { get; set; }
         [Required(ErrorMessage = "Country name is required")]
         public string? Country { get; set; }
-        [Required(ErrorMessage = "Mobile number is required")]
-        public string? MobileNumber { get; set; }
         public string? EmailVerificationLinkCode { get; set; }
         public bool VisibleEmailOption { get; set; }
     }

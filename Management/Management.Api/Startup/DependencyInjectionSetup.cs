@@ -27,10 +27,9 @@ namespace Management.Api.Startup
             services.AddScoped<IUserServices, UserServices>();
             services.AddConfiguaration<ConnectionStringConfig>(Configuration, "ConnectionStrings");
             services.AddIdentity<ApplicationUser, Role>()
-                    .AddEntityFrameworkStores<ApplicationDbContext>()
-                    .AddDefaultTokenProviders();
+                    .AddEntityFrameworkStores<ApplicationDbContext>();
+                    //.AddDefaultTokenProviders();
 
-            //services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
             #endregion
 
             services.AddControllers();

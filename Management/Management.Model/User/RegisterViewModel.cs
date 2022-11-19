@@ -22,6 +22,8 @@ namespace Management.Model.User
         public string? Password { get; set; }
         public Guid CompanyId { get; set; }
         public string? UserRole { get; set; }
+        public string? Country { get; set; }
+        public string? PhoneNumber { get; set; }
         public string? IpAddress { get; set; }
         public bool VisibleEmailOption { get; set; }
         public string? EmailVerificationLinkCode { get; set; }
