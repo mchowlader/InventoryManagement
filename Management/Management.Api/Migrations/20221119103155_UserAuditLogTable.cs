@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace Management.Api.Migrations
 {
-    public partial class UserAuditLogsTable : Migration
+    public partial class UserAuditLogTable : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {

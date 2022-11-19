@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Management.Api.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20221117081203_UserAuditLogsTable")]
-    partial class UserAuditLogsTable
+    [Migration("20221119103155_UserAuditLogTable")]
+    partial class UserAuditLogTable
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -70,10 +70,6 @@ namespace Management.Api.Migrations
 
                     b.Property<DateTimeOffset?>("LockoutEnd")
                         .HasColumnType("datetimeoffset");
-
-                    b.Property<string>("MobileNumber")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("NormalizedEmail")
                         .HasMaxLength(256)

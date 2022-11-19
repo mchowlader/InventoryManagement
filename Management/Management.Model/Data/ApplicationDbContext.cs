@@ -1,4 +1,5 @@
-﻿using Management.Model.DBModel;
+﻿using Management.Common.Configuration;
+using Management.Model.DBModel;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -20,6 +21,5 @@ namespace Management.Model.Data
 
         public DbSet<DBModel.Action> Actions { get; set; }
         public DbSet<UserAuditLog> UserAuditLogs { get; set; }
-
     }
 }

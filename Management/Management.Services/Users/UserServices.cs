@@ -40,6 +40,8 @@ namespace Management.Services.User
                 }
                 user.EmailVerificationLinkCode= register.EmailVerificationLinkCode;
                 user.EmailConfirmed = false;
+                user.Country = register.Country;
+                user.PhoneNumber = register.PhoneNumber;
 
                 var result = await _userManager.CreateAsync(user);
                 if (!result.Succeeded)

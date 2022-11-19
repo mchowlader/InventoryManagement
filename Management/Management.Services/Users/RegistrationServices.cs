@@ -51,9 +51,11 @@ namespace Management.Services.Users
                         IpAddress = userRegistrationDTO.IpAddress,
                         Password = userRegistrationDTO.Password,
                         UserName = userRegistrationDTO.UserName,
+                        Country = userRegistrationDTO.Country,
                         FirstName = "",
                         LastName = "",
                         UserRole = "",
+                        PhoneNumber = userRegistrationDTO.PhoneNumber,
                         VisibleEmailOption = false,
                         EmailVerificationLinkCode = email_verificaiotn_link_code,
                         EmailVerificationExpiry = Utilities.GetDate().AddDays(1)

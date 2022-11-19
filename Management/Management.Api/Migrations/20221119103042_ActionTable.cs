@@ -9,18 +9,13 @@ namespace Management.Api.Migrations
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.AddColumn<string>(
+            migrationBuilder.AlterColumn<string>(
                 name: "EmailVerificationLinkCode",
                 table: "AspNetUsers",
                 type: "nvarchar(max)",
-                nullable: true);
-
-            migrationBuilder.AddColumn<bool>(
-                name: "VisibleEmailOption",
-                table: "AspNetUsers",
-                type: "bit",
-                nullable: false,
-                defaultValue: false);
+                nullable: true,
+                oldClrType: typeof(string),
+                oldType: "nvarchar(max)");
 
             migrationBuilder.CreateTable(
                 name: "Actions",
@@ -46,13 +41,15 @@ namespace Management.Api.Migrations
             migrationBuilder.DropTable(
                 name: "Actions");
 
-            migrationBuilder.DropColumn(
+            migrationBuilder.AlterColumn<string>(
                 name: "EmailVerificationLinkCode",
-                table: "AspNetUsers");
-
-            migrationBuilder.DropColumn(
-                name: "VisibleEmailOption",
-                table: "AspNetUsers");
+                table: "AspNetUsers",
+                type: "nvarchar(max)",
+                nullable: false,
+                defaultValue: "",
+                oldClrType: typeof(string),
+                oldType: "nvarchar(max)",
+                oldNullable: true);
         }
     }
 }
