@@ -22,13 +22,17 @@ namespace Management.Api.Startup
                 => option.UseSqlServer(Configuration.GetConnectionString("DefaultConnection"),
                 b => b.MigrationsAssembly(typeof(Program).Assembly.FullName)));
 
+            services.AddDbContext<BlogDbContext>(option
+              => option.UseSqlServer(Configuration.GetConnectionString("DefaultConnection"),
+              b => b.MigrationsAssembly(typeof(Program).Assembly.FullName)));
+
             #region Custom Serveice Registration
             services.AddScoped<IRegistrationServices, RegistrationServices>();
             services.AddScoped<IUserServices, UserServices>();
             services.AddConfiguaration<ConnectionStringConfig>(Configuration, "ConnectionStrings");
             services.AddIdentity<ApplicationUser, Role>()
-                    .AddEntityFrameworkStores<ApplicationDbContext>();
-                    //.AddDefaultTokenProviders();
+                    .AddEntityFrameworkStores<ApplicationDbContext>()
+                    .AddEntityFrameworkStores<BlogDbContext>();
 
             #endregion
 

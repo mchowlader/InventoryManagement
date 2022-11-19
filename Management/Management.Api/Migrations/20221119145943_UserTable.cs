@@ -10,6 +10,24 @@ namespace Management.Api.Migrations
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
+                name: "Actions",
+                columns: table => new
+                {
+                    Id = table.Column<long>(type: "bigint", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Name = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    CreateBy = table.Column<int>(type: "int", nullable: true),
+                    CreateDate = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    UpdateBy = table.Column<int>(type: "int", nullable: true),
+                    UpdateDate = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    IsRemoved = table.Column<bool>(type: "bit", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Actions", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "AspNetRoles",
                 columns: table => new
                 {
@@ -33,7 +51,7 @@ namespace Management.Api.Migrations
                     CompanyId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     IsRemoved = table.Column<bool>(type: "bit", nullable: false),
                     Country = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    EmailVerificationLinkCode = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    EmailVerificationLinkCode = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     VisibleEmailOption = table.Column<bool>(type: "bit", nullable: false),
                     UserName = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
                     NormalizedUserName = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
@@ -53,6 +71,29 @@ namespace Management.Api.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_AspNetUsers", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "UserAuditLog",
+                columns: table => new
+                {
+                    Id = table.Column<long>(type: "bigint", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    ActionMoment = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    IpAddress = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    ByUserId = table.Column<long>(type: "bigint", nullable: false),
+                    AffectedUserId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    ActionId = table.Column<long>(type: "bigint", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_UserAuditLog", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_UserAuditLog_Actions_ActionId",
+                        column: x => x.ActionId,
+                        principalTable: "Actions",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -199,6 +240,11 @@ namespace Management.Api.Migrations
                 column: "NormalizedUserName",
                 unique: true,
                 filter: "[NormalizedUserName] IS NOT NULL");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_UserAuditLog_ActionId",
+                table: "UserAuditLog",
+                column: "ActionId");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
@@ -219,10 +265,16 @@ namespace Management.Api.Migrations
                 name: "AspNetUserTokens");
 
             migrationBuilder.DropTable(
+                name: "UserAuditLog");
+
+            migrationBuilder.DropTable(
                 name: "AspNetRoles");
 
             migrationBuilder.DropTable(
                 name: "AspNetUsers");
+
+            migrationBuilder.DropTable(
+                name: "Actions");
         }
     }
 }
