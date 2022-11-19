@@ -33,7 +33,10 @@ namespace Management.Api.Migrations.BlogDb
                     b.Property<DateTime>("CreatedOn")
                         .HasColumnType("datetime2");
 
-                    b.Property<bool>("IsPublished")
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("IsVisible")
                         .HasColumnType("bit");
 
                     b.Property<DateTime>("LastModifiedDate")
@@ -64,7 +67,10 @@ namespace Management.Api.Migrations.BlogDb
                     b.Property<DateTime>("CreatedOn")
                         .HasColumnType("datetime2");
 
-                    b.Property<bool>("IsPublished")
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("IsVisible")
                         .HasColumnType("bit");
 
                     b.Property<DateTime>("LastModifiedDate")
@@ -105,7 +111,10 @@ namespace Management.Api.Migrations.BlogDb
                     b.Property<DateTime>("CreatedOn")
                         .HasColumnType("datetime2");
 
-                    b.Property<bool>("IsPublished")
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("IsVisible")
                         .HasColumnType("bit");
 
                     b.Property<DateTime>("LastModifiedDate")
@@ -145,9 +154,6 @@ namespace Management.Api.Migrations.BlogDb
                         .HasColumnType("datetime2");
 
                     b.Property<bool>("IsActive")
-                        .HasColumnType("bit");
-
-                    b.Property<bool>("IsPublished")
                         .HasColumnType("bit");
 
                     b.Property<bool>("IsVisible")
@@ -211,7 +217,10 @@ namespace Management.Api.Migrations.BlogDb
                     b.Property<DateTime>("CreatedOn")
                         .HasColumnType("datetime2");
 
-                    b.Property<bool>("IsPublished")
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("IsVisible")
                         .HasColumnType("bit");
 
                     b.Property<DateTime>("LastModifiedDate")

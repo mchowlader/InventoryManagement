@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Management.Api.Migrations.BlogDb
 {
     [DbContext(typeof(BlogDbContext))]
-    [Migration("20221119145109_BlogTables")]
+    [Migration("20221119150149_BlogTables")]
     partial class BlogTables
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -35,7 +35,10 @@ namespace Management.Api.Migrations.BlogDb
                     b.Property<DateTime>("CreatedOn")
                         .HasColumnType("datetime2");
 
-                    b.Property<bool>("IsPublished")
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("IsVisible")
                         .HasColumnType("bit");
 
                     b.Property<DateTime>("LastModifiedDate")
@@ -66,7 +69,10 @@ namespace Management.Api.Migrations.BlogDb
                     b.Property<DateTime>("CreatedOn")
                         .HasColumnType("datetime2");
 
-                    b.Property<bool>("IsPublished")
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("IsVisible")
                         .HasColumnType("bit");
 
                     b.Property<DateTime>("LastModifiedDate")
@@ -107,7 +113,10 @@ namespace Management.Api.Migrations.BlogDb
                     b.Property<DateTime>("CreatedOn")
                         .HasColumnType("datetime2");
 
-                    b.Property<bool>("IsPublished")
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("IsVisible")
                         .HasColumnType("bit");
 
                     b.Property<DateTime>("LastModifiedDate")
@@ -147,9 +156,6 @@ namespace Management.Api.Migrations.BlogDb
                         .HasColumnType("datetime2");
 
                     b.Property<bool>("IsActive")
-                        .HasColumnType("bit");
-
-                    b.Property<bool>("IsPublished")
                         .HasColumnType("bit");
 
                     b.Property<bool>("IsVisible")
@@ -213,7 +219,10 @@ namespace Management.Api.Migrations.BlogDb
                     b.Property<DateTime>("CreatedOn")
                         .HasColumnType("datetime2");
 
-                    b.Property<bool>("IsPublished")
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("IsVisible")
                         .HasColumnType("bit");
 
                     b.Property<DateTime>("LastModifiedDate")

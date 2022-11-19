@@ -12,7 +12,8 @@ namespace Management.Model.Entities.BlogsEntities
     public class BlogBaseModel
     {
         public int Id { get; set; }
-        public bool IsPublished { get; set; }
+        public bool IsActive { get; set; }
+        public bool IsVisible { get; set; }
         public DateTime CreatedOn { get; set; }
         public DateTime PublishOn { get; set; }
         public DateTime LastModifiedDate { get; set; }
@@ -20,11 +21,9 @@ namespace Management.Model.Entities.BlogsEntities
 
     public class Post : BlogBaseModel
     {
-        public Guid UserId { get; set; }
         public string? Title { get; set; }
+        public Guid UserId { get; set; }
         public string? Content { get; set; }
-        public bool IsActive { get; set; }
-        public bool IsVisible { get; set; }
         public List<Comment>? Comments { get; set; }
         public List<Like>? Likes { get; set; }
         public List<PostTag>? PostTags { get; set; }
