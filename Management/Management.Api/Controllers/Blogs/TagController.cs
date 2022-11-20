@@ -3,9 +3,10 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Management.Api.Controllers.Blogs
 {
-    [Route("api/blog")]
+    [Route("api/tags")]
     [ApiController]
-    public class BlogController : ControllerBase
+    public class TagController : ControllerBase
     {
+
     }
 }

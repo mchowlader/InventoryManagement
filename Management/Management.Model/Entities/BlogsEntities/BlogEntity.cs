@@ -14,8 +14,6 @@ namespace Management.Model.Entities.BlogsEntities
         public int Id { get; set; }
         public bool IsActive { get; set; }
         public bool IsVisible { get; set; }
-        public DateTime CreatedOn { get; set; }
-        public DateTime PublishOn { get; set; }
         public DateTime LastModifiedDate { get; set; }
     }
 
@@ -24,18 +22,21 @@ namespace Management.Model.Entities.BlogsEntities
         public string? Title { get; set; }
         public Guid UserId { get; set; }
         public string? Content { get; set; }
+        public DateTime PublishOn { get; set; }
         public List<Comment>? Comments { get; set; }
         public List<Like>? Likes { get; set; }
         public List<PostTag>? PostTags { get; set; }
         public List<PostCategory>? PostCategories { get; set; }
     }
-    public class Category : BlogBaseModel
+    public class Category
     {
+        public int Id { get; set; }
         public string? Title { get; set; }
         public List<PostCategory>? PostCategories { get; set; }
     }
-    public class Tag : BlogBaseModel
+    public class Tag 
     {
+        public int Id { get; set; }
         public string? Title { get; set; }
         public List<PostTag>? PostTags { get; set; }
     }
@@ -48,8 +49,9 @@ namespace Management.Model.Entities.BlogsEntities
         public Comment? Parent { get; set; }
         public Post? Post { get; set; }
     }
-    public class Like : BlogBaseModel
+    public class Like
     {
+        public int Id { get; set; }
         public Guid UserId { get; set; }
         public int TotalLike { get; set; }
         public int PostId { get; set; }

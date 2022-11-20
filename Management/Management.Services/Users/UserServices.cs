@@ -73,7 +73,7 @@ namespace Management.Services.User
                 }
                 user.PasswordHash = null;
 
-                using(var context = new ApplicationDbContext(optionsBuilder.Options))
+                using (var context = new ApplicationDbContext(optionsBuilder.Options))
                 {
                     var action = await context.Actions.FirstOrDefaultAsync(x => x.Name == "Add user");
                     UserAuditLog userAuditLog = new UserAuditLog
