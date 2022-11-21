@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Management.Api.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20221119150013_UserAuditLogTable")]
-    partial class UserAuditLogTable
+    [Migration("20221120123552_ActionAndUserAuditLogsTable")]
+    partial class ActionAndUserAuditLogsTable
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {

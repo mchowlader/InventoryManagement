@@ -25,6 +25,7 @@ namespace Management.Api.Controllers
         [ProducesResponseType(typeof(UserRegistrationDTO), 201)]
         public async Task<IActionResult> SignUp(UserRegistrationDTO userRegistrationDTO)
         {
+
             var result = await _registrationServices.SignUp(userRegistrationDTO);
 
             return Ok(new PayloadResponse<UserRegistrationDTO>

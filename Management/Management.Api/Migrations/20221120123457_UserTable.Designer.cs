@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Management.Api.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20221119150003_ActionTable")]
-    partial class ActionTable
+    [Migration("20221120123457_UserTable")]
+    partial class UserTable
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -245,67 +245,6 @@ namespace Management.Api.Migrations
                     b.ToTable("AspNetUserTokens", (string)null);
                 });
 
-            modelBuilder.Entity("Management.Model.DBModel.Action", b =>
-                {
-                    b.Property<long>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("bigint");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("Id"), 1L, 1);
-
-                    b.Property<int?>("CreateBy")
-                        .HasColumnType("int");
-
-                    b.Property<DateTime>("CreateDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<bool>("IsRemoved")
-                        .HasColumnType("bit");
-
-                    b.Property<string>("Name")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int?>("UpdateBy")
-                        .HasColumnType("int");
-
-                    b.Property<DateTime?>("UpdateDate")
-                        .HasColumnType("datetime2");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Actions");
-                });
-
-            modelBuilder.Entity("Management.Model.DBModel.UserAuditLog", b =>
-                {
-                    b.Property<long>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("bigint");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("Id"), 1L, 1);
-
-                    b.Property<long>("ActionId")
-                        .HasColumnType("bigint");
-
-                    b.Property<DateTime>("ActionMoment")
-                        .HasColumnType("datetime2");
-
-                    b.Property<Guid>("AffectedUserId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<long>("ByUserId")
-                        .HasColumnType("bigint");
-
-                    b.Property<string>("IpAddress")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("ActionId");
-
-                    b.ToTable("UserAuditLog");
-                });
-
             modelBuilder.Entity("Management.Model.Data.Roleclaim", b =>
                 {
                     b.HasOne("Management.Model.Data.Role", null)
@@ -355,17 +294,6 @@ namespace Management.Api.Migrations
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-                });
-
-            modelBuilder.Entity("Management.Model.DBModel.UserAuditLog", b =>
-                {
-                    b.HasOne("Management.Model.DBModel.Action", "Stores")
-                        .WithMany()
-                        .HasForeignKey("ActionId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Stores");
                 });
 #pragma warning restore 612, 618
         }

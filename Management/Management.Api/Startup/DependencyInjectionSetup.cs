@@ -1,5 +1,6 @@
 ﻿using Management.Common.Configuration;
 using Management.Model.Data;
+using Management.Services.Blogs;
 using Management.Services.User;
 using Management.Services.Users;
 using Microsoft.AspNetCore.Http;
@@ -33,6 +34,9 @@ namespace Management.Api.Startup
             services.AddIdentity<ApplicationUser, Role>()
                     .AddEntityFrameworkStores<ApplicationDbContext>()
                     .AddEntityFrameworkStores<BlogDbContext>();
+
+
+            services.AddScoped<IPostServices, PostServices>();
 
             #endregion
 
