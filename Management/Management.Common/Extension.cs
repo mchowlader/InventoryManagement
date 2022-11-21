@@ -44,5 +44,47 @@ namespace Management.Common
                 return 0;
             }
         }
+        public static string IsNullOrEmpty(this string s, string s2)
+        {
+            if(String.IsNullOrWhiteSpace(s))
+            {
+                return s2;
+            }
+            else
+            {
+                return s;
+            }
+        }
+        public static string IsNullOrWhiteSpace(this string s, string s2)
+        {
+            if (String.IsNullOrWhiteSpace(s))
+            {
+                return s2;
+            }
+            else
+            {
+                return s;
+            }
+        }
+        public static string ToCommaSeparatedString(this List<string> strList)
+        {
+            var str = String.Empty;
+            if(strList.Count > 0)
+            {
+                foreach(var _str in strList)
+                {
+                    var index = strList.FindIndex(x => x == _str);
+                    if(index < (strList.Count - 1))
+                    {
+                        str = _str + _str + ",";
+                    }
+                    else if(index == (strList.Count - 1))
+                    {
+                        str= _str + ",";
+                    }
+                }
+            }
+            return str;
+        }
     }
 }

@@ -19,6 +19,7 @@ namespace Management.Services.Users
     {
         private readonly ConnectionStringConfig _connectionStringConfig;
         private readonly IUserServices _userServices;
+        private readonly UserManager<ApplicationUser> _userManager;
         DbContextOptionsBuilder<ApplicationDbContext> optionsBuilder = new DbContextOptionsBuilder<ApplicationDbContext>();
         public RegistrationServices(ConnectionStringConfig connectionStringConfig, IUserServices userServices)
         {
@@ -62,14 +63,34 @@ namespace Management.Services.Users
                     };
 
                     var userCreation = await _userServices.CreateUserAsync(registerViewModel, adminUserId.ToString());
+
+                    if(userCreation.Success) 
+                    { 
+                        var user = await context.Users.Where(x => x.Id == userCreation.Payload.Id).FirstOrDefaultAsync();
+                        var sendEmail = await _userServices.SendEmailConfirmationEmailAsync(user, userRegistrationDTO.InvitationConfirmationURL);
+
+                        if(sendEmail)
+                        {
+                            return ServiceResponse<UserRegistrationDTO>.Success("Please check your email inbox for verification email");
+                        }
+                        else
+                        {
+                            await _userServices.DeleteUser(userRegistrationDTO.Email);
+                            return ServiceResponse<UserRegistrationDTO>.Error("There is a problem with user sign up. Please try again.");
+                        }
+                    }
+                    else
+                    {
+                        return ServiceResponse<UserRegistrationDTO>.Error("Sign up failed : " + userCreation.Message.ToCommaSeparatedString());
+                    }
                 }
             }
-            catch (Exception)
+            catch (Exception ex)
             {
 
-                throw;
+                await _userServices.DeleteUser(userRegistrationDTO.Email);
+                return ServiceResponse<UserRegistrationDTO>.Error("Sign up failed : " + ex.Message);
             }
-            throw new NotImplementedException();
         }
     }
     public interface IRegistrationServices

@@ -1,20 +1,24 @@
 ﻿using Management.Common;
+using Management.Common.Configuration;
 using Management.Model.CommonModel;
 using Management.Model.Data;
 using Management.Model.DBModel;
 using Management.Model.User;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using System.Net.Mail;
 
 namespace Management.Services.User
 {
     public class UserServices : IUserServices
     {
         private readonly UserManager<ApplicationUser> _userManager;
+        private readonly MailConfiguration _mailConfiguration;
         private readonly string requestTime = Utilities.GetRequestResponseTime();
         DbContextOptionsBuilder<ApplicationDbContext> optionsBuilder = new DbContextOptionsBuilder<ApplicationDbContext>();
-        public UserServices(UserManager<ApplicationUser> userManager)
+        public UserServices(UserManager<ApplicationUser> userManager, MailConfiguration mailConfiguration)
         {
+            _mailConfiguration= mailConfiguration;
             _userManager= userManager;
         }
         public async Task<PayloadResponse<ApplicationUser>> CreateUserAsync(RegisterViewModel register, string identityUserId)
@@ -111,9 +115,57 @@ namespace Management.Services.User
         {
             return (int)(user?.Identity?.Name?.ToInt32() ?? 0);
         }
+
+        public async Task<bool> SendEmailConfirmationEmailAsync(ApplicationUser? user, string? invitationConfirmationURL)
+        {
+            try
+            {
+                string title = "Management Email Confirmation";
+                var mailList = new List<string>()
+            {
+                user.Email
+            };
+                var mailBCCList = new List<string>();
+                var mailCCList = new List<string>();
+                var rasorModel = new
+                {
+                    Name = user.FirstName?.IsNullOrEmpty(user.UserName),
+                    Url = invitationConfirmationURL + user.EmailVerificationLinkCode
+                };
+
+                var email = new MailMessage();
+                email.From = new MailAddress(_mailConfiguration.Mail, _mailConfiguration.DisplayName);
+                email.To.Add(user.Email);
+                email.Subject = title;
+                email.IsBodyHtml = true;
+                email.Body = invitationConfirmationURL;
+                using var smtp = new SmtpClient(_mailConfiguration.Host);
+                smtp.Host = _mailConfiguration.Host;
+                smtp.Port = _mailConfiguration.Port;
+                smtp.EnableSsl = true;
+                smtp.Credentials = new System.Net.NetworkCredential(_mailConfiguration.Mail, _mailConfiguration.Password);
+                await smtp.SendMailAsync(email);
+                smtp.Dispose();
+
+                return true;
+            }
+            catch (Exception)
+            {
+                return false;
+            }
+        }
+
+        public async Task<PayloadResponse<ApplicationUser>> DeleteUser(string email)
+        {
+            var applicationUser = await _userManager.FindByEmailAsync(email);
+            _userManager.DeleteAsync(applicationUser);
+            throw new NotImplementedException();
+        }
     }
     public interface IUserServices
     {
-        public Task<PayloadResponse<ApplicationUser>> CreateUserAsync(RegisterViewModel register, string identityUserId);
+        Task<PayloadResponse<ApplicationUser>> CreateUserAsync(RegisterViewModel register, string identityUserId);
+        Task<PayloadResponse<ApplicationUser>> DeleteUser(string email);
+        Task<bool> SendEmailConfirmationEmailAsync(ApplicationUser? user, string? invitationConfirmationURL);
     }
 }
