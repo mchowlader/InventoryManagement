@@ -6,22 +6,16 @@ using Management.Model.User;
 using Management.Services.User;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Options;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Management.Services.Users
 {
-    public class RegistrationServices : IRegistrationServices
+    public class AuthenticationServices : IAuthenticationServices
     {
         private readonly ConnectionStringConfig _connectionStringConfig;
         private readonly IUserServices _userServices;
         private readonly UserManager<ApplicationUser> _userManager;
         DbContextOptionsBuilder<ApplicationDbContext> optionsBuilder = new DbContextOptionsBuilder<ApplicationDbContext>();
-        public RegistrationServices(ConnectionStringConfig connectionStringConfig, IUserServices userServices)
+        public AuthenticationServices(ConnectionStringConfig connectionStringConfig, IUserServices userServices)
         {
             _connectionStringConfig = connectionStringConfig;
             optionsBuilder.UseSqlServer(_connectionStringConfig.DefaultConnection);
@@ -93,7 +87,7 @@ namespace Management.Services.Users
             }
         }
     }
-    public interface IRegistrationServices
+    public interface IAuthenticationServices
     {
         Task<ServiceResponse<UserRegistrationDTO>> SignUp(UserRegistrationDTO userRegistrationDTO);
     }

@@ -10,11 +10,11 @@ namespace Management.Api.Controllers
     [ApiExplorerSettings(IgnoreApi = false)]
     [Route("api/users")]
     [ApiController]
-    public class UserController : ControllerBase
+    public class AuthenticationController : ControllerBase
     {
-        private readonly IRegistrationServices _registrationServices;
+        private readonly IAuthenticationServices _registrationServices;
         private readonly string requestTime = Utilities.GetRequestResponseTime();
-        public UserController(IRegistrationServices registrationServices)
+        public AuthenticationController(IAuthenticationServices registrationServices)
         {
             _registrationServices = registrationServices;
         }
