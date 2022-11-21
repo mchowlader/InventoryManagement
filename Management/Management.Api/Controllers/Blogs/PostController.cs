@@ -1,9 +1,8 @@
 ﻿using Management.Common;
-using Management.Model.BlogModel;
+using Management.Model.BusinessObjects.BusinessObjects.BlogDTO;
 using Management.Model.CommonModel;
 using Management.Model.Data;
 using Management.Services.Blogs;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 
@@ -29,14 +28,13 @@ namespace Management.Api.Controllers.Blogs
         [ProducesResponseType(typeof(PostDTO), 201)]
         public async Task<IActionResult> CreatePost(PostDTO postDTO)
         {
-            var userId = _userManager.GetUserId(User);
-            var result = await _postServices.CreatePost(postDTO, userId);
+            var result = await _postServices.CreatePost(postDTO, User);
 
             if (result.success)
             {
                 return Ok(new PayloadResponse<PostDTO>
                 {
-                    Message = result.Message,
+                    Message = result.message,
                     Payload = result.data,
                     PayloadType = "Create Blog Post.",
                     RequestTime = requestTime,
@@ -48,7 +46,7 @@ namespace Management.Api.Controllers.Blogs
             {
                 return new BadRequestObjectResult(new
                 {
-                    error = result.Message,
+                    error = result.message,
                     type = "https://tools.ietf.org/html/rfc7231#section-6.5.1",
                     title = "One or more validation occurred.",
                     status = 400,
@@ -57,6 +55,5 @@ namespace Management.Api.Controllers.Blogs
 
             }
         }
-
     }
 }

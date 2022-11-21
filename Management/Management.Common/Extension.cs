@@ -33,5 +33,16 @@ namespace Management.Common
                 return 0;
             }
         }
+        public static long ToInt64(this object o)
+        {
+            try
+            {
+                return Convert.ToInt64(o);
+            }
+            catch (Exception)
+            {
+                return 0;
+            }
+        }
     }
 }

@@ -5,12 +5,6 @@ using Management.Model.DBModel;
 using Management.Model.User;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Options;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Management.Services.User
 {
@@ -112,6 +106,10 @@ namespace Management.Services.User
                 };
             }
 
+        }
+        public static int GetUserId(System.Security.Claims.ClaimsPrincipal user)
+        {
+            return (int)(user?.Identity?.Name?.ToInt32() ?? 0);
         }
     }
     public interface IUserServices
