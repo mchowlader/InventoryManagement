@@ -8,13 +8,13 @@ using Microsoft.AspNetCore.Mvc;
 namespace Management.Api.Controllers
 {
     [ApiExplorerSettings(IgnoreApi = false)]
-    [Route("api/users")]
+    [Route("api/authentication")]
     [ApiController]
-    public class UserController : ControllerBase
+    public class AuthenticationController : ControllerBase
     {
-        private readonly IRegistrationServices _registrationServices;
+        private readonly IAuthenticationServices _registrationServices;
         private readonly string requestTime = Utilities.GetRequestResponseTime();
-        public UserController(IRegistrationServices registrationServices)
+        public AuthenticationController(IAuthenticationServices registrationServices)
         {
             _registrationServices = registrationServices;
         }
@@ -25,12 +25,11 @@ namespace Management.Api.Controllers
         [ProducesResponseType(typeof(UserRegistrationDTO), 201)]
         public async Task<IActionResult> SignUp(UserRegistrationDTO userRegistrationDTO)
         {
-
             var result = await _registrationServices.SignUp(userRegistrationDTO);
 
             return Ok(new PayloadResponse<UserRegistrationDTO>
             {
-                Message = result.Message,
+                Message = result.message,
                 Payload = result.data,
                 PayloadType = "SignUp",
                 RequestTime = requestTime,

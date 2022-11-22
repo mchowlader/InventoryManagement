@@ -19,7 +19,7 @@ namespace Management.Model.Data
         
         }
 
-        public DbSet<DBModel.Action> Actions { get; set; }
+        public DbSet<Management.Model.DBModel.Action> Actions { get; set; }
         public DbSet<UserAuditLog> UserAuditLogs { get; set; }
     }
 }

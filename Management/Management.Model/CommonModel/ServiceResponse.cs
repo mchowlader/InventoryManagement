@@ -10,7 +10,7 @@ namespace Management.Model.CommonModel
     public class ServiceResponse<TEntity> where TEntity : class
     {
         public TEntity? data { get; set; }
-        public List<string>? Message { get; set; }
+        public List<string>? message { get; set; }
         public bool success { get; set; }
         public static ServiceResponse<TEntity> Error(string? message = null)
         {
@@ -24,8 +24,18 @@ namespace Management.Model.CommonModel
             return new ServiceResponse<TEntity>
             {
                 data = null,
-                Message = new List<string> { message ?? "There was a problem handling the request."} ,
+                message = new List<string> { message ?? "There was a problem handling the request."} ,
                 success = false
+            };
+        }
+
+        public static ServiceResponse<TEntity> Success(string? message = null, TEntity data = null)
+        {
+            return new ServiceResponse<TEntity>
+            {
+                data = data,
+                message = new List<string> { message ?? "Request successful." },
+                success= true
             };
         }
     }

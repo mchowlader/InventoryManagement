@@ -28,12 +28,13 @@ namespace Management.Api.Startup
               b => b.MigrationsAssembly(typeof(Program).Assembly.FullName)));
 
             #region Custom Serveice Registration
-            services.AddScoped<IRegistrationServices, RegistrationServices>();
+            services.AddScoped<IAuthenticationServices, AuthenticationServices>();
             services.AddScoped<IUserServices, UserServices>();
             services.AddConfiguaration<ConnectionStringConfig>(Configuration, "ConnectionStrings");
             services.AddIdentity<ApplicationUser, Role>()
                     .AddEntityFrameworkStores<ApplicationDbContext>()
                     .AddEntityFrameworkStores<BlogDbContext>();
+            services.Configure<MailConfiguration>(Configuration.GetSection("MailSettings"));
 
 
             services.AddScoped<IPostServices, PostServices>();
