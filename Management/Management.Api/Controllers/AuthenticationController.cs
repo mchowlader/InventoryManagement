@@ -8,7 +8,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace Management.Api.Controllers
 {
     [ApiExplorerSettings(IgnoreApi = false)]
-    [Route("api/users")]
+    [Route("api/authentication")]
     [ApiController]
     public class AuthenticationController : ControllerBase
     {

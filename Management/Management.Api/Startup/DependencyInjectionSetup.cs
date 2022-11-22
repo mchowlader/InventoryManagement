@@ -34,6 +34,7 @@ namespace Management.Api.Startup
             services.AddIdentity<ApplicationUser, Role>()
                     .AddEntityFrameworkStores<ApplicationDbContext>()
                     .AddEntityFrameworkStores<BlogDbContext>();
+            services.Configure<MailConfiguration>(Configuration.GetSection("MailSettings"));
 
 
             services.AddScoped<IPostServices, PostServices>();

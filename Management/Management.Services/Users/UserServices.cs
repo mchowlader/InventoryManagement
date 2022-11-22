@@ -6,6 +6,7 @@ using Management.Model.DBModel;
 using Management.Model.User;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Options;
 using System.Net.Mail;
 
 namespace Management.Services.User
@@ -14,11 +15,15 @@ namespace Management.Services.User
     {
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly MailConfiguration _mailConfiguration;
+        private readonly ConnectionStringConfig _connectionStringConfig;
+
         private readonly string requestTime = Utilities.GetRequestResponseTime();
         DbContextOptionsBuilder<ApplicationDbContext> optionsBuilder = new DbContextOptionsBuilder<ApplicationDbContext>();
-        public UserServices(UserManager<ApplicationUser> userManager, MailConfiguration mailConfiguration)
+        public UserServices(UserManager<ApplicationUser> userManager, IOptions<MailConfiguration> options, ConnectionStringConfig connectionStringConfig)
         {
-            _mailConfiguration= mailConfiguration;
+            _connectionStringConfig = connectionStringConfig;
+            optionsBuilder.UseSqlServer(_connectionStringConfig.DefaultConnection);
+            _mailConfiguration = options.Value;
             _userManager= userManager;
         }
         public async Task<PayloadResponse<ApplicationUser>> CreateUserAsync(RegisterViewModel register, string identityUserId)
@@ -88,7 +93,7 @@ namespace Management.Services.User
 
                 return new PayloadResponse<ApplicationUser>
                 {
-                    Success = false,
+                    Success = true,
                     Message = new List<string>() { "User creatd successfully." },
                     Payload = user,
                     PayloadType = "Create User",
