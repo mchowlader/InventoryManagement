@@ -24,7 +24,11 @@ namespace Management.Services.Users
 
         public Task<ServiceResponse<object>> ConfirmSignUp(string email_confirmation_code)
         {
-            throw new NotImplementedException();
+            using(var context = new ApplicationDbContext(optionsBuilder.Options))
+            {
+                var user = context.Users.Where(x => x.EmailVerificationLinkCode== email_confirmation_code).FirstOrDefault();
+            }
+            return default;
         }
 
         public async Task<ServiceResponse<UserRegistrationDTO>> SignUp(UserRegistrationDTO userRegistrationDTO)

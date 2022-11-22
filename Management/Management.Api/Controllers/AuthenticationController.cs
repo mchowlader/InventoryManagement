@@ -45,6 +45,16 @@ namespace Management.Api.Controllers
         {
             var result = _authenticationServices.ConfirmSignUp(email_confirmation_code);
 
+            //return Ok(new PayloadResponse<object>
+            //{
+            //    Message = result.message,
+            //    Payload = result.data,
+            //    PayloadType = "ConfirmSignUp",
+            //    RequestTime = requestTime,
+            //    Success = result.success
+            //});
+
+            return default;
         }
     }
 }
