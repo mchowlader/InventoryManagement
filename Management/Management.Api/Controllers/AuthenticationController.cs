@@ -12,11 +12,11 @@ namespace Management.Api.Controllers
     [ApiController]
     public class AuthenticationController : ControllerBase
     {
-        private readonly IAuthenticationServices _registrationServices;
+        private readonly IAuthenticationServices _authenticationServices;
         private readonly string requestTime = Utilities.GetRequestResponseTime();
-        public AuthenticationController(IAuthenticationServices registrationServices)
+        public AuthenticationController(IAuthenticationServices authenticationServices)
         {
-            _registrationServices = registrationServices;
+            _authenticationServices = authenticationServices;
         }
 
         [HttpPost]
@@ -25,7 +25,7 @@ namespace Management.Api.Controllers
         [ProducesResponseType(typeof(UserRegistrationDTO), 201)]
         public async Task<IActionResult> SignUp(UserRegistrationDTO userRegistrationDTO)
         {
-            var result = await _registrationServices.SignUp(userRegistrationDTO);
+            var result = await _authenticationServices.SignUp(userRegistrationDTO);
 
             return Ok(new PayloadResponse<UserRegistrationDTO>
             {
@@ -35,6 +35,16 @@ namespace Management.Api.Controllers
                 RequestTime = requestTime,
                 Success = result.success
             });
+        }
+
+        [HttpPost]
+        [Route("confirmsignup")]
+        [ProducesResponseType(typeof(BadRequestObjectResult), 400)]
+        [ProducesResponseType(typeof(object), 2021)]
+        public Task<IActionResult> ConfirmSignUp(string email_confirmation_code)
+        {
+            var result = _authenticationServices.ConfirmSignUp(email_confirmation_code);
+
         }
     }
 }

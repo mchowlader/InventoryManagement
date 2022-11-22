@@ -21,6 +21,12 @@ namespace Management.Services.Users
             optionsBuilder.UseSqlServer(_connectionStringConfig.DefaultConnection);
             _userServices = userServices;
         }
+
+        public Task<ServiceResponse<object>> ConfirmSignUp(string email_confirmation_code)
+        {
+            throw new NotImplementedException();
+        }
+
         public async Task<ServiceResponse<UserRegistrationDTO>> SignUp(UserRegistrationDTO userRegistrationDTO)
         {
             try
@@ -89,6 +95,7 @@ namespace Management.Services.Users
     }
     public interface IAuthenticationServices
     {
+        Task<ServiceResponse<object>> ConfirmSignUp(string email_confirmation_code);
         Task<ServiceResponse<UserRegistrationDTO>> SignUp(UserRegistrationDTO userRegistrationDTO);
     }
 }
