@@ -22,13 +22,25 @@ namespace Management.Services.Users
             _userServices = userServices;
         }
 
-        public Task<ServiceResponse<object>> ConfirmSignUp(string email_confirmation_code)
+        public async Task<ServiceResponse<object>> ConfirmSignUp(string email_confirmation_code)
         {
             using(var context = new ApplicationDbContext(optionsBuilder.Options))
             {
-                var user = context.Users.Where(x => x.EmailVerificationLinkCode== email_confirmation_code).FirstOrDefault();
+                var user = await context.Users
+                   .Where(x => x.EmailVerificationLinkCode == email_confirmation_code
+                   && x.EmailVerificationExpiry >= Utilities.GetDate())
+                   .FirstOrDefaultAsync();
+                if (user == null)
+                    return ServiceResponse<object>.Error("Account activation link has been expired");
+                if (user.EmailConfirmed)
+                    return ServiceResponse<object>.Success("Your email is already confirmed. Please sign in with your username and password to continue.");
+
+                var email_confirmation = await _userServices.ConfirmEmail(user, email_confirmation_code, true);
+                if (!email_confirmation)
+                    return ServiceResponse<object>.Error("Account activation link has been expired");
+
+                return ServiceResponse<object>.Success("Your email has been confirmed. Please sign in with your username and password to set up your account.");
             }
-            return default;
         }
 
         public async Task<ServiceResponse<UserRegistrationDTO>> SignUp(UserRegistrationDTO userRegistrationDTO)

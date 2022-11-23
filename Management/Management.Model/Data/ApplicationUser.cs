@@ -15,6 +15,7 @@ namespace Management.Model.Data
         public string? Country { get; set; }
         public string? EmailVerificationLinkCode { get; set; }
         public bool VisibleEmailOption { get; set; }
+        public DateTime? EmailVerificationExpiry { get; set; }
     }
     public class Role : IdentityRole<Guid>
     {

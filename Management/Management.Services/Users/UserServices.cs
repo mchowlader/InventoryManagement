@@ -21,30 +21,31 @@ namespace Management.Services.User
         DbContextOptionsBuilder<ApplicationDbContext> optionsBuilder = new DbContextOptionsBuilder<ApplicationDbContext>();
         public UserServices(UserManager<ApplicationUser> userManager, IOptions<MailConfiguration> options, ConnectionStringConfig connectionStringConfig)
         {
+            _userManager = userManager;
             _connectionStringConfig = connectionStringConfig;
             optionsBuilder.UseSqlServer(_connectionStringConfig.DefaultConnection);
             _mailConfiguration = options.Value;
-            _userManager= userManager;
         }
         public async Task<PayloadResponse<ApplicationUser>> CreateUserAsync(RegisterViewModel register, string identityUserId)
         {
             var user = new ApplicationUser();
-            if(await _userManager.FindByNameAsync(register.UserName) == null && await _userManager.FindByEmailAsync(register.Email) == null)
+            if (await _userManager.FindByNameAsync(register.UserName) == null && await _userManager.FindByEmailAsync(register.Email) == null)
             {
                 user.CompanyId = register.CompanyId;
                 user.UserName = register.UserName;
                 user.Email = register.Email;
-                user.FirstName= register.FirstName;
-                user.LastName= register.LastName;
+                user.FirstName = register.FirstName;
+                user.LastName = register.LastName;
                 user.IsRemoved = false;
-                if(register.UserRole != "Admin")
+                if (register.UserRole != "Admin")
                 {
                     user.VisibleEmailOption = register.VisibleEmailOption;
                 }
-                user.EmailVerificationLinkCode= register.EmailVerificationLinkCode;
+                user.EmailVerificationLinkCode = register.EmailVerificationLinkCode;
                 user.EmailConfirmed = false;
                 user.Country = register.Country;
                 user.PhoneNumber = register.PhoneNumber;
+                user.EmailVerificationExpiry = register.EmailVerificationExpiry;
 
                 var result = await _userManager.CreateAsync(user);
                 if (!result.Succeeded)
@@ -61,7 +62,7 @@ namespace Management.Services.User
                 }
 
                 result = await _userManager.AddPasswordAsync(user, register.Password);
-                if(!result.Succeeded)
+                if (!result.Succeeded)
                 {
                     return new PayloadResponse<ApplicationUser>
                     {
@@ -143,7 +144,7 @@ namespace Management.Services.User
                 email.To.Add(user.Email);
                 email.Subject = title;
                 email.IsBodyHtml = true;
-                email.Body = invitationConfirmationURL;
+                email.Body = rasorModel.Url;
                 using var smtp = new SmtpClient(_mailConfiguration.Host);
                 smtp.Host = _mailConfiguration.Host;
                 smtp.Port = _mailConfiguration.Port;
@@ -166,9 +167,44 @@ namespace Management.Services.User
             _userManager.DeleteAsync(applicationUser);
             throw new NotImplementedException();
         }
+
+        public async Task<bool> ConfirmEmail(ApplicationUser user, string email_confirmation_code, bool set_mfa = true)
+        {
+            try
+            {
+                if (!user.EmailConfirmed)
+                {
+                    var email_confirmation = user.EmailVerificationLinkCode == email_confirmation_code
+                        && user.EmailVerificationExpiry >= Utilities.GetDate();
+                    if (email_confirmation)
+                    {
+                        using (var context = new ApplicationDbContext(optionsBuilder.Options))
+                        {
+                            user = await context.Users.Where(x => x.Id == user.Id).FirstOrDefaultAsync();
+                            user.EmailConfirmed = true;
+                            user.EmailVerificationExpiry = null;
+                            if (set_mfa) user.TwoFactorEnabled = true;
+                            context.Users.Update(user);
+                            await context.SaveChangesAsync();
+                            return email_confirmation;
+                        }
+                    }
+                    else
+                    {
+                        return false;
+                    }
+                }
+                return false;
+            }
+            catch (Exception ex)
+            {
+                return false;
+            }
+        }
     }
     public interface IUserServices
     {
+        Task<bool> ConfirmEmail(ApplicationUser user, string email_confirmation_code, bool set_mfa = true);
         Task<PayloadResponse<ApplicationUser>> CreateUserAsync(RegisterViewModel register, string identityUserId);
         Task<PayloadResponse<ApplicationUser>> DeleteUser(string email);
         Task<bool> SendEmailConfirmationEmailAsync(ApplicationUser? user, string? invitationConfirmationURL);
