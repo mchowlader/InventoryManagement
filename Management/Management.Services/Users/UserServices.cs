@@ -75,6 +75,20 @@ namespace Management.Services.User
 
                     };
                 }
+                result = await _userManager.AddToRoleAsync(user, register.UserRole);
+                if(!result.Succeeded)
+                {
+                    return new PayloadResponse<ApplicationUser>
+                    {
+                        Success = false,
+                        Message = result.Errors.Select(x => x.Description.Replace("User name", "Username")).ToList(),
+                        Payload = null,
+                        PayloadType = "Create User",
+                        RequestTime = requestTime,
+                        ResponseTime = Utilities.GetRequestResponseTime()
+                    };
+                }
+
                 user.PasswordHash = null;
 
                 using (var context = new ApplicationDbContext(optionsBuilder.Options))

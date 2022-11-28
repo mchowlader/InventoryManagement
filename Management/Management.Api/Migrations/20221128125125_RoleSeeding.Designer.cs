@@ -4,6 +4,7 @@ using Management.Model.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Management.Api.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20221128125125_RoleSeeding")]
+    partial class RoleSeeding
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -145,22 +147,22 @@ namespace Management.Api.Migrations
                     b.HasData(
                         new
                         {
-                            Id = new Guid("5896697b-ecb7-43c8-848b-8542b0e7756f"),
-                            ConcurrencyStamp = "7dc34b04-500a-4e5e-91a2-64e4b916d1a5",
+                            Id = new Guid("8b1496c7-bc44-4ebe-abd0-6e92e68d344f"),
+                            ConcurrencyStamp = "11/28/2022 6:51:25 PM",
                             Name = "Admin",
                             NormalizedName = "ADMIN"
                         },
                         new
                         {
-                            Id = new Guid("ab907b6c-bc8a-4411-82a4-1f07b23302ef"),
-                            ConcurrencyStamp = "b0f6ab45-c547-4804-90a8-7d73fd6a63a7",
+                            Id = new Guid("75265502-730d-4b85-b1bf-448c5cda51dd"),
+                            ConcurrencyStamp = "11/28/2022 6:51:25 PM",
                             Name = "SuperAdmin",
                             NormalizedName = "SUPERADMIN"
                         },
                         new
                         {
-                            Id = new Guid("d1af5c6f-33a0-4a8e-b6cd-9052dad89ff6"),
-                            ConcurrencyStamp = "4f7180d7-e489-4055-8d78-41d34ade0e4e",
+                            Id = new Guid("0df1a2ab-0e35-476b-aba1-c7d8bf502613"),
+                            ConcurrencyStamp = "11/28/2022 6:51:25 PM",
                             Name = "User",
                             NormalizedName = "USER"
                         });

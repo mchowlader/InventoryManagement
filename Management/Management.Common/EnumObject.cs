@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace Management.Common
-{
+{   
     public class _EnumObject
     {
         public enum Role
