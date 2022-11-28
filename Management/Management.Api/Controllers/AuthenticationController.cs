@@ -1,8 +1,11 @@
-﻿using Management.Common;
+﻿using Management.Api.SwaggerResponseExamples;
+using Management.Common;
 using Management.Model.CommonModel;
+using Management.Model.Data;
 using Management.Model.User;
 using Management.Services.Users;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Management.Api.Controllers
@@ -14,8 +17,10 @@ namespace Management.Api.Controllers
     {
         private readonly IAuthenticationServices _authenticationServices;
         private readonly string requestTime = Utilities.GetRequestResponseTime();
-        public AuthenticationController(IAuthenticationServices authenticationServices)
+        private readonly UserManager<ApplicationUser> _userManager;  
+        public AuthenticationController(IAuthenticationServices authenticationServices, UserManager<ApplicationUser> userManager)
         {
+            _userManager = userManager;
             _authenticationServices = authenticationServices;
         }
 
@@ -53,6 +58,58 @@ namespace Management.Api.Controllers
                 RequestTime = requestTime,
                 Success = result.success
             });
+        }
+
+        [HttpPost]
+        [Route("login")]
+        [ProducesResponseType(typeof(LoginResponseViewModel), 201)]
+        [ProducesResponseType(typeof(LoginUnauthorizeResponseViewModel), 401)]
+        [ProducesResponseType(typeof(LoginNotFoundResponseExample), 404)]
+        [ProducesResponseType(typeof(BadRequestObjectResult), 400)]
+        public async Task<IActionResult> Login([FromBody] LoginModel login)
+        {
+            var user = await _userManager.FindByNameAsync(login.UserName);
+
+            #region Bad Login Attempts
+            if (user == null 
+                || 
+                user.IsRemoved 
+                || 
+                !await _userManager.CheckPasswordAsync(user ?? new ApplicationUser(), login.Password)
+               )
+            {
+                var response = new LoginUnauthorizeResponseViewModel
+                {
+                    FailedResponse = new FailedLoginResponse
+                    {
+                        Error = 401,
+                        ErrorMessage = "Invalid Login Credentials."
+                    }
+                };
+
+                return Ok(response);
+            }
+
+            var role = await _userManager.GetRolesAsync(user);
+
+            if((role.FirstOrDefault() == "User" || role.FirstOrDefault() == "Admin")
+                &&
+                !user.EmailConfirmed
+              )
+            {
+                var response = new FailedLoginResponse
+                {
+                    ErrorMessage = "Please confirm your email before loging in.",
+                    Error = 501
+                };
+
+                return Ok(response);
+            }
+            #endregion
+
+
+            return default;
+
         }
     }
 }
