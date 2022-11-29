@@ -12,7 +12,8 @@ namespace Management.Common
         {
             SuperAdmin,
             Admin,
-            User
+            User,
+            CompanyAdmin
         }
     }
 }

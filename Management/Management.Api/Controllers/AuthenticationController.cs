@@ -17,7 +17,7 @@ namespace Management.Api.Controllers
     {
         private readonly IAuthenticationServices _authenticationServices;
         private readonly string requestTime = Utilities.GetRequestResponseTime();
-        private readonly UserManager<ApplicationUser> _userManager;  
+        private readonly UserManager<ApplicationUser> _userManager;
         public AuthenticationController(IAuthenticationServices authenticationServices, UserManager<ApplicationUser> userManager)
         {
             _userManager = userManager;
@@ -60,6 +60,13 @@ namespace Management.Api.Controllers
             });
         }
 
+        #region Private LoginService
+        private async Task<IActionResult> ValidLoginResponse(ApplicationUser user, string deviceId)
+        {
+
+        }
+        #endregion
+
         [HttpPost]
         [Route("login")]
         [ProducesResponseType(typeof(LoginResponseViewModel), 201)]
@@ -71,10 +78,10 @@ namespace Management.Api.Controllers
             var user = await _userManager.FindByNameAsync(login.UserName);
 
             #region Bad Login Attempts
-            if (user == null 
-                || 
-                user.IsRemoved 
-                || 
+            if (user == null
+                ||
+                user.IsRemoved
+                ||
                 !await _userManager.CheckPasswordAsync(user ?? new ApplicationUser(), login.Password)
                )
             {
@@ -92,7 +99,7 @@ namespace Management.Api.Controllers
 
             var role = await _userManager.GetRolesAsync(user);
 
-            if((role.FirstOrDefault() == "User" || role.FirstOrDefault() == "Admin")
+            if ((role.FirstOrDefault() == "User" || role.FirstOrDefault() == "Admin" || role.FirstOrDefault() == "CompanyAdmin")
                 &&
                 !user.EmailConfirmed
               )
@@ -107,9 +114,14 @@ namespace Management.Api.Controllers
             }
             #endregion
 
+            #region Basic Login
+            if (!user.TwoFactorEnabled || user.Email.IsNullOrEmpty() )
+            {
+                return await ValidLoginResponse(user, login.DeviceId); 
+            }
+            #endregion
 
-            return default;
-
+            return Unauthorized();
         }
     }
 }

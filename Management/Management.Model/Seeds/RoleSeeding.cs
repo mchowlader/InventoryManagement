@@ -18,6 +18,7 @@ namespace Management.Model.Seeds
                     new Role(){Id = Guid.NewGuid(), Name = "Admin", NormalizedName = "ADMIN", ConcurrencyStamp=Guid.NewGuid().ToString()},
                     new Role(){Id = Guid.NewGuid(), Name = "SuperAdmin", NormalizedName = "SUPERADMIN", ConcurrencyStamp=Guid.NewGuid().ToString()},
                     new Role(){Id = Guid.NewGuid(), Name = "User", NormalizedName = "USER", ConcurrencyStamp=Guid.NewGuid().ToString()},
+                    new Role(){Id = Guid.NewGuid(), Name = "CompanyAdmin", NormalizedName = "COMPANYADMIN", ConcurrencyStamp=Guid.NewGuid().ToString()},
                 };
             }
         }

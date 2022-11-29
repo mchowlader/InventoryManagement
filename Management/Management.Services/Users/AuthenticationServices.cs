@@ -71,7 +71,7 @@ namespace Management.Services.Users
                         Country = userRegistrationDTO.Country,
                         FirstName = "",
                         LastName = "",
-                        UserRole = _EnumObject.Role.SuperAdmin.ToString(),
+                        UserRole = _EnumObject.Role.CompanyAdmin.ToString(),
                         PhoneNumber = userRegistrationDTO.PhoneNumber,
                         VisibleEmailOption = false,
                         EmailVerificationLinkCode = email_verificaiotn_link_code,
