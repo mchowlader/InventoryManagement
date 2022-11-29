@@ -63,7 +63,7 @@ namespace Management.Api.Controllers
         #region Private LoginService
         private async Task<IActionResult> ValidLoginResponse(ApplicationUser user, string deviceId)
         {
-
+            return default;
         }
         #endregion
 
