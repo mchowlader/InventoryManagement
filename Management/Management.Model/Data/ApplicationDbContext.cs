@@ -1,5 +1,6 @@
 ﻿using Management.Common.Configuration;
 using Management.Model.DBModel;
+using Management.Model.Seeds;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -18,7 +19,13 @@ namespace Management.Model.Data
         { 
         
         }
+        protected override void OnModelCreating(ModelBuilder builder)
+        {
+            builder.Entity<Role>()
+                .HasData(RoleSeeding.Roles);
 
+            base.OnModelCreating(builder);
+        }
         public DbSet<Management.Model.DBModel.Action> Actions { get; set; }
         public DbSet<UserAuditLog> UserAuditLogs { get; set; }
     }

@@ -4,6 +4,7 @@ using Management.Model.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Management.Api.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20221128125629_UpdateRoleSeeding")]
+    partial class UpdateRoleSeeding
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -145,31 +147,24 @@ namespace Management.Api.Migrations
                     b.HasData(
                         new
                         {
-                            Id = new Guid("e8861941-02d3-4605-be43-7bb295104048"),
-                            ConcurrencyStamp = "dc625ea7-b129-4581-b228-5748ac2c4651",
+                            Id = new Guid("5896697b-ecb7-43c8-848b-8542b0e7756f"),
+                            ConcurrencyStamp = "7dc34b04-500a-4e5e-91a2-64e4b916d1a5",
                             Name = "Admin",
                             NormalizedName = "ADMIN"
                         },
                         new
                         {
-                            Id = new Guid("3dc0fca1-8c39-4cee-ab74-759e356ac673"),
-                            ConcurrencyStamp = "ae872eb9-0e05-4f45-9a43-729354646a0e",
+                            Id = new Guid("ab907b6c-bc8a-4411-82a4-1f07b23302ef"),
+                            ConcurrencyStamp = "b0f6ab45-c547-4804-90a8-7d73fd6a63a7",
                             Name = "SuperAdmin",
                             NormalizedName = "SUPERADMIN"
                         },
                         new
                         {
-                            Id = new Guid("b1a5de59-5f0a-4883-b808-accc14f168dc"),
-                            ConcurrencyStamp = "ace462bc-2e19-4b61-8966-82dec15e36c5",
+                            Id = new Guid("d1af5c6f-33a0-4a8e-b6cd-9052dad89ff6"),
+                            ConcurrencyStamp = "4f7180d7-e489-4055-8d78-41d34ade0e4e",
                             Name = "User",
                             NormalizedName = "USER"
-                        },
-                        new
-                        {
-                            Id = new Guid("a9862c83-1b69-475c-aa8e-26bb04b0a2c5"),
-                            ConcurrencyStamp = "833aadb2-be63-48fa-b294-ac52ea0d043b",
-                            Name = "CompanyAdmin",
-                            NormalizedName = "COMPANYADMIN"
                         });
                 });
 

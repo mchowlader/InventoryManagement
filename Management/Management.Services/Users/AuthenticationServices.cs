@@ -21,6 +21,28 @@ namespace Management.Services.Users
             optionsBuilder.UseSqlServer(_connectionStringConfig.DefaultConnection);
             _userServices = userServices;
         }
+
+        public async Task<ServiceResponse<object>> ConfirmSignUp(string email_confirmation_code)
+        {
+            using(var context = new ApplicationDbContext(optionsBuilder.Options))
+            {
+                var user = await context.Users
+                   .Where(x => x.EmailVerificationLinkCode == email_confirmation_code
+                   && x.EmailVerificationExpiry >= Utilities.GetDate())
+                   .FirstOrDefaultAsync();
+                if (user == null)
+                    return ServiceResponse<object>.Error("Account activation link has been expired");
+                if (user.EmailConfirmed)
+                    return ServiceResponse<object>.Success("Your email is already confirmed. Please sign in with your username and password to continue.");
+
+                var email_confirmation = await _userServices.ConfirmEmail(user, email_confirmation_code, true);
+                if (!email_confirmation)
+                    return ServiceResponse<object>.Error("Account activation link has been expired");
+
+                return ServiceResponse<object>.Success("Your email has been confirmed. Please sign in with your username and password to set up your account.");
+            }
+        }
+
         public async Task<ServiceResponse<UserRegistrationDTO>> SignUp(UserRegistrationDTO userRegistrationDTO)
         {
             try
@@ -49,7 +71,7 @@ namespace Management.Services.Users
                         Country = userRegistrationDTO.Country,
                         FirstName = "",
                         LastName = "",
-                        UserRole = "",
+                        UserRole = _EnumObject.Role.CompanyAdmin.ToString(),
                         PhoneNumber = userRegistrationDTO.PhoneNumber,
                         VisibleEmailOption = false,
                         EmailVerificationLinkCode = email_verificaiotn_link_code,
@@ -89,6 +111,7 @@ namespace Management.Services.Users
     }
     public interface IAuthenticationServices
     {
+        Task<ServiceResponse<object>> ConfirmSignUp(string email_confirmation_code);
         Task<ServiceResponse<UserRegistrationDTO>> SignUp(UserRegistrationDTO userRegistrationDTO);
     }
 }

@@ -28,7 +28,6 @@ namespace Management.Model.CommonModel
                 success = false
             };
         }
-
         public static ServiceResponse<TEntity> Success(string? message = null, TEntity data = null)
         {
             return new ServiceResponse<TEntity>
